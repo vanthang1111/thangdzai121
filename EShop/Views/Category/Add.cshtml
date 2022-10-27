@@ -1,0 +1,46 @@
+﻿@model EShop.Models.tb_Category
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Thêm Mới Danh Mục Sản Phẩm</title>\
+
+    <style>
+        div{
+            margin-bottom: 10px;
+        }
+        div label{
+            display: inline-block;
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h2>Thêm Mới Danh Mục Sản Phẩm</h2>
+        @using (Html.BeginForm())
+        {
+            <div>
+                @Html.LabelFor(m => m.Name)
+                @Html.TextBoxFor(m => m.Name)
+            </div>
+            <div>
+                @Html.LabelFor(m => m.NameVN)
+                @Html.TextBoxFor(m => m.NameVN)
+            </div>
+            <div>
+                <span>@ViewBag.Message</span>
+            </div>
+            <div>
+                <input type="submit"  value="Thêm Mới"/>
+            </div>
+        }
+    </div>
+</body>
+</html>

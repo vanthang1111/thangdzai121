@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="EShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="tb_Category">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="NameVN" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="tb_Customer">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" />
+    <Property Name="Fullname" Type="nvarchar" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar" MaxLength="50" />
+    <Property Name="Photo" Type="nvarchar" MaxLength="50" />
+    <Property Name="Activated" Type="bit" />
+  </EntityType>
+  <EntityType Name="tb_Order">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerId" Type="bigint" />
+    <Property Name="OrderDate" Type="datetime" />
+    <Property Name="Address" Type="nvarchar" MaxLength="50" />
+    <Property Name="Amount" Type="float" />
+    <Property Name="Description" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="tb_OrderDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="OrderId" Type="bigint" />
+    <Property Name="ProductId" Type="bigint" />
+    <Property Name="UnitPrice" Type="float" />
+    <Property Name="Quantity" Type="float" />
+  </EntityType>
+  <EntityType Name="tb_Product">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="UnitPrice" Type="float" />
+    <Property Name="Image" Type="nvarchar" MaxLength="500" />
+    <Property Name="ProductDate" Type="datetime" />
+    <Property Name="Available" Type="bit" />
+    <Property Name="CategoryId" Type="int" />
+    <Property Name="Description" Type="nvarchar(max)" />
+  </EntityType>
+  <Association Name="FK_tb_Order_tb_Customer">
+    <End Role="tb_Customer" Type="Self.tb_Customer" Multiplicity="0..1" />
+    <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Customer">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tb_Order">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tb_OrderDetail_tb_Order">
+    <End Role="tb_Order" Type="Self.tb_Order" Multiplicity="0..1" />
+    <End Role="tb_OrderDetail" Type="Self.tb_OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Order">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tb_OrderDetail">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tb_OrderDetail_tb_Product">
+    <End Role="tb_Product" Type="Self.tb_Product" Multiplicity="0..1" />
+    <End Role="tb_OrderDetail" Type="Self.tb_OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Product">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tb_OrderDetail">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_tb_Product_tb_Category">
+    <End Role="tb_Category" Type="Self.tb_Category" Multiplicity="0..1" />
+    <End Role="tb_Product" Type="Self.tb_Product" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tb_Category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="tb_Product">
+        <PropertyRef Name="CategoryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EShopModelStoreContainer">
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_Category" EntityType="Self.tb_Category" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_Customer" EntityType="Self.tb_Customer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_Order" EntityType="Self.tb_Order" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_OrderDetail" EntityType="Self.tb_OrderDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tb_Product" EntityType="Self.tb_Product" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_tb_Order_tb_Customer" Association="Self.FK_tb_Order_tb_Customer">
+      <End Role="tb_Customer" EntitySet="tb_Customer" />
+      <End Role="tb_Order" EntitySet="tb_Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tb_OrderDetail_tb_Order" Association="Self.FK_tb_OrderDetail_tb_Order">
+      <End Role="tb_Order" EntitySet="tb_Order" />
+      <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tb_OrderDetail_tb_Product" Association="Self.FK_tb_OrderDetail_tb_Product">
+      <End Role="tb_Product" EntitySet="tb_Product" />
+      <End Role="tb_OrderDetail" EntitySet="tb_OrderDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_tb_Product_tb_Category" Association="Self.FK_tb_Product_tb_Category">
+      <End Role="tb_Category" EntitySet="tb_Category" />
+      <End Role="tb_Product" EntitySet="tb_Product" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
